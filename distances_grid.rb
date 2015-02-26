@@ -5,7 +5,7 @@ class DistanceGrid < Grid
 
   def contents_of(cell)
     if distances && distances[cell]
-      distances[cell].to_s(36)
+      distances[cell].to_s
     else
       super
     end
