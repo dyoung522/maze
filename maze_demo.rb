@@ -7,7 +7,8 @@ require 'distances_grid'
 options = {
     height: 10,
     width: 10,
-    solve: false
+    solve: false,
+    output: 'text',
 }
 errors = []
 
@@ -38,6 +39,16 @@ OptionParser.new do |opts|
   opts.on('', '--[no-]solve', 'Show the solution') do |o|
     options[:solve] = o
   end
+
+  opts.on('', '--[no-]solve', 'Show the solution') do |o|
+    options[:solve] = o
+  end
+
+  opts.on('', '--png', 'Output maze as png') do |o|
+    options[:output] = 'png'
+    options[:output_file] = 'maze.png'
+  end
+
 end.parse!
 
 if errors.any?
@@ -56,5 +67,10 @@ if options[:solve]
   grid.distances = distances
 end
 
-puts grid
-# grid.to_png.save 'maze.png'
+case options[:output]
+  when 'text' then puts grid
+  when 'png'
+    puts "Saved to #{options[:output_file]}"
+    grid.to_png.save options[:output_file]
+end
+
