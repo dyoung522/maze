@@ -8,7 +8,7 @@ options = {
     height: 10,
     width: 10,
     solve: false,
-    output: 'text',
+    output: ['text'],
 }
 errors = []
 
@@ -44,9 +44,21 @@ OptionParser.new do |opts|
     options[:solve] = o
   end
 
-  opts.on('', '--png', 'Output maze as png') do |o|
-    options[:output] = 'png'
-    options[:output_file] = 'maze.png'
+  opts.on('', '--[no-]text', 'Output maze as ASCII') do |o|
+    if o == true
+      options[:output] << 'text'
+    else
+      options[:output].delete('text')
+    end
+  end
+
+  opts.on('', '--[no-]png', 'Output maze as png') do |o|
+    if o == true
+      options[:output] << 'png'
+      options[:output_file] = 'maze.png'
+    else
+      options[:output].delete('png')
+    end
   end
 
 end.parse!
@@ -67,10 +79,12 @@ if options[:solve]
   grid.distances = distances
 end
 
-case options[:output]
-  when 'text' then puts grid
-  when 'png'
-    puts "Saved to #{options[:output_file]}"
-    grid.to_png.save options[:output_file]
+options[:output].uniq.each do |type|
+  case type
+    when /text/ then puts grid
+    when /png/
+      grid.to_png.save options[:output_file]
+      puts "Saved to #{options[:output_file]}"
+  end
 end
 
