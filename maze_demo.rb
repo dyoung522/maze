@@ -4,7 +4,12 @@ require 'binary_tree'
 require 'sidewinder'
 require 'distances_grid'
 
-options = { height: 5, width: 5 }
+options = {
+    height: 10,
+    width: 10,
+    solve: false
+}
+errors = []
 
 OptionParser.new do |opts|
   opts.banner = "\nUsage: #{$0} [options]\n\n"
@@ -14,23 +19,42 @@ OptionParser.new do |opts|
     exit
   end
 
-  opts.on('-w N', '--width=N', 'Width of Maze') do |o|
-    options[:width] = o.to_i
+  opts.on('-w N', '--width=N', Integer, 'Width of Maze') do |o|
+    if o > 100
+      errors << 'Width too large.'
+    else
+      options[:width] = o
+    end
   end
 
-  opts.on('-h N', '--height=N', 'Height of Maze') do |o|
-    options[:height] = o.to_i
+  opts.on('-h N', '--height=N', Integer, 'Height of Maze') do |o|
+    if o > 100
+      errors << 'Height too large.'
+    else
+      options[:height] = o
+    end
+  end
+
+  opts.on('', '--[no-]solve', 'Show the solution') do |o|
+    options[:solve] = o
   end
 end.parse!
+
+if errors.any?
+  errors.each { |error| puts error }
+  exit 1
+end
 
 grid = DistanceGrid.new(options[:height], options[:width])
 
 # BinaryTree.on(grid)
 Sidewinder.on(grid)
 
-start = grid[0, 0]
-distances = start.distances
-grid.distances = distances
+if options[:solve]
+  start = grid[0, 0]
+  distances = start.distances
+  grid.distances = distances
+end
 
 puts grid
 # grid.to_png.save 'maze.png'
