@@ -29,12 +29,37 @@ class Cell
     @links.key?(cell)
   end
 
+  def east=(cell)
+    return if cell == east
+    @east = cell
+    cell.west = self
+  end
+
+  def west=(cell)
+    return if cell == west
+    @west = cell
+    cell.east = self
+  end
+
+  def north=(cell)
+    return if cell == north
+    @north = cell
+    cell.south = self
+  end
+
+  def south=(cell)
+    return if cell == south
+    @south = cell
+    cell.north = self
+  end
+
   def neighbors
     list = []
     list << north if north
     list << south if south
     list << east if east
     list << west if west
+    list
   end
 
   def distances
