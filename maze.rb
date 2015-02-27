@@ -20,7 +20,7 @@ if options.solve
   start = grid[0, 0]
   distances = start.distances
   # grid.distances = distances
-  grid.distances = distances.path_to(grid[grid.rows - 1, 0])
+  grid.distances = distances.path_to(grid[grid.rows - 1, grid.columns - 1])
 end
 
 options.output.uniq.each do |type|
