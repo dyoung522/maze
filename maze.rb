@@ -1,8 +1,4 @@
-require 'grid'
-require 'options'
-require 'binary_tree'
-require 'sidewinder'
-require 'distances_grid'
+require_relative 'lib/maze'
 
 defaults = {
     height: 10,
@@ -21,12 +17,15 @@ Sidewinder.on(grid)
 if options.solve
   start = grid[0, 0]
   distances = start.distances
-  grid.distances = distances
+  # grid.distances = distances
+  grid.distances = distances.path_to(grid[grid.rows - 1, 0])
 end
 
 options.output.uniq.each do |type|
   case type
-    when /text/ then puts grid
+    when /text/
+      puts grid
+
     when /png/
       grid.to_png.save options.output_file
       puts "Saved to #{options.output_file}"
