@@ -34,6 +34,10 @@ class Options
         options.solve = o
       end
 
+      opts.on('', '--longest', 'Show the longest path') do |o|
+        options.longest = o
+      end
+
       opts.on('', '--[no-]text', 'Output maze as ASCII') do |o|
         if o == true
           options.output << 'text'

@@ -62,7 +62,7 @@ class Grid
   end
 
   def contents_of(cell)
-    ' '
+    cell.content || ' '
   end
 
   def to_s
