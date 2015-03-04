@@ -42,6 +42,17 @@ describe Grid do
     end
   end
 
+  context '#random_cell' do
+    before { @grid = Grid.new(10,10) }
+    it 'should return a random cell' do
+      seen = false
+      1000.times do
+        seen = true and break if @grid.random_cell == @grid[5,5]
+      end
+      expect(seen).to eq true
+    end
+  end
+
   context 'output' do
     it '#to_s should draw an ASCII grid' do
       expect(@grid.to_s).to eq "+----+----+\n|    |    |\n" * 2 + "+----+----+\n"

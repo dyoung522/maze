@@ -8,7 +8,7 @@ describe Cell do
   end
 
   subject { Cell.new(1,1) }
-  it { is_expected.to respond_to(:north, :south, :east, :west) }
+  it { is_expected.to respond_to(:north, :south, :east, :west, :content) }
 
   context 'linking' do
     it 'links cells' do
@@ -42,4 +42,12 @@ describe Cell do
       expect(@cell.distances).to be_kind_of Distances
     end
   end
+
+  context '#content' do
+    it 'sets cell contents' do
+      @cell.content = 'test'
+      expect(@cell.content).to eq 'test'
+    end
+  end
+
 end

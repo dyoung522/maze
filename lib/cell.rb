@@ -2,7 +2,8 @@ require 'distances'
 
 class Cell
   attr_reader :row, :column
-  attr_accessor :north, :south, :east, :west, :content
+  attr_reader :north, :south, :east, :west
+  attr_accessor :content
 
   def initialize(row, column)
     @row, @column = row, column

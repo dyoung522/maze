@@ -1,32 +1,35 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env ruby -I lib
 
-require_relative 'lib/maze'
+require 'maze'
 
 defaults = {
     height: 10,
     width: 10,
     solve: false,
     output: ['text'],
+    :algorithm => :aldous_broder
 }
 
 options = Options.parse(defaults)
 
-# grid = DistanceGrid.new(options.height, options.width)
-grid = ColoredGrid.new(options.height, options.width)
+grid = DistanceGrid.new(options.height, options.width)
+# grid = ColoredGrid.new(options.height, options.width)
 
 start = grid[grid.rows / 2, grid.columns / 2]
 goal  = grid[grid.rows - 1, grid.columns - 1]
 
 case options.algorithm
-  when :sidewinder then Sidewinder.on(grid)
-  else BinaryTree.on(grid)
+when :sidewinder then Sidewinder.on(grid)
+when :binarytree then BinaryTree.on(grid)
+when :aldous_broder then AldousBroder.on(grid)
+else defaults[:algorithm]
 end
 
 if options.longest
   distances = start.distances
-  new_start, distance = distances.max
+  start, distance = distances.max
 
-  longest = new_start.distances
+  longest = start.distances
   goal, distance = longest.max
   grid.distances = longest.path_to(goal)
 end
