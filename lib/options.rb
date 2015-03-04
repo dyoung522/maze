@@ -38,20 +38,29 @@ class Options
         options.longest = o
       end
 
+      opts.on('--sidewinder', 'Use the SideWinder algorithm') do |o|
+        options.algorithm = :sidewinder
+      end
+
+      opts.on('--colorize-png', 'Generate a texture colored PNG') do |o|
+        options.colorized_png = true
+        options.output << :png
+      end
+
       opts.on('', '--[no-]text', 'Output maze as ASCII') do |o|
         if o == true
-          options.output << 'text'
+          options.output << :text
         else
-          options.output.delete('text')
+          options.output.delete(:text)
         end
       end
 
       opts.on('', '--[no-]png', 'Output maze as png') do |o|
         if o == true
-          options.output << 'png'
+          options.output << :png
           options.output_file = 'maze.png'
         else
-          options.output.delete('png')
+          options.output.delete(:png)
         end
       end
     end.parse!(args)
@@ -63,7 +72,7 @@ class Options
 
     if options.output.empty?
       puts 'No output requested, defaulting to ASCII'
-      options.output << 'text'
+      options.output << :text
     end
 
     options

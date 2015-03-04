@@ -11,13 +11,16 @@ defaults = {
 
 options = Options.parse(defaults)
 
-grid = DistanceGrid.new(options.height, options.width)
+# grid = DistanceGrid.new(options.height, options.width)
+grid = ColoredGrid.new(options.height, options.width)
 
-start = grid[0,0]
+start = grid[grid.rows / 2, grid.columns / 2]
 goal  = grid[grid.rows - 1, grid.columns - 1]
 
-# BinaryTree.on(grid)
-Sidewinder.on(grid)
+case options.algorithm
+  when :sidewinder then Sidewinder.on(grid)
+  else BinaryTree.on(grid)
+end
 
 if options.longest
   distances = start.distances
@@ -39,6 +42,7 @@ options.output.uniq.each do |type|
       puts grid
 
     when /png/
+      grid.distances = start.distances if options.colorize_png
       grid.to_png.save options.output_file
       puts "Saved to #{options.output_file}"
   end
